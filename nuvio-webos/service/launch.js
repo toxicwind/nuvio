@@ -9,7 +9,7 @@ var fs = require("fs");
 var path = require("path");
 var Service = require("webos-service");
 
-var service = new Service("com.toxicwind.aether.server");
+var service = new Service("com.toxicwind.slate.server");
 var ready = false;
 var pendingMessages = [];
 

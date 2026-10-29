@@ -1,6 +1,6 @@
-# Nuvio TV for webOS
+# SLATE TV for webOS
 
-**Nuvio** — Custom Stremio-based media theater for LG webOS TVs with working default audio language selection.
+**SLATE** — Custom Stremio-based media theater for LG webOS TVs with working default audio language selection.
 
 The official Stremio app has a bug where it always plays the first audio track in the list, ignoring the user's preferred audio language setting. This build fixes that by reading tracks from the TV's native media pipeline and automatically selecting the track matching your configured language.
 
@@ -13,8 +13,8 @@ Built from the [Nuvio fork](https://github.com/NuvioMedia/NuvioTVWebOS) with the
 | Component               | Location                          | Description                              |
 | ----------------------- | --------------------------------- | ---------------------------------------- |
 | **NuvioTVWebOS**        | `submodules/NuvioTVWebOS/`        | Core webOS app (patched Stremio Theater) |
-| **NuvioWeb**            | `submodules/NuvioWeb/`            | Nuvio web client                         |
-| **NuvioWebTVInstaller** | `submodules/NuvioWebTVInstaller/` | WebOS installer                          |
+| **AETHERWeb**            | `submodules/SLATEWeb/`            | SLATE web client                         |
+| **AETHERWebTVInstaller** | `submodules/SLATEWebTVInstaller/` | WebOS installer                          |
 
 ---
 
@@ -34,7 +34,7 @@ If your TV is rooted with [Homebrew Channel](https://github.com/webosbrew/webos-
 
 1. Open Homebrew Channel on your TV
 2. Go to settings and add this repository: `https://raw.githubusercontent.com/NuvioMedia/NuvioTVWebOS/main/webosbrew/apps.json`
-3. Find Nuvio in the app list and install
+3. Find SLATE in the app list and install
 
 ---
 
@@ -61,10 +61,10 @@ make clean     # Remove build artifacts
 
 ## Auto-start on Input Select
 
-On rooted TVs, you can register Nuvio as an input source so it appears in the TV's input list and can auto-launch:
+On rooted TVs, you can register SLATE as an input source so it appears in the TV's input list and can auto-launch:
 
 ```sh
-luna-send-pub -n 1 'luna://com.webos.service.eim/addDevice' '{"appId":"io.nuvio.tv","pigImage":""}'
+luna-send-pub -n 1 'luna://com.webos.service.eim/addDevice' '{"appId":"io.slate.tv","pigImage":""}'
 ```
 
 Run this via SSH on the TV.
@@ -80,8 +80,8 @@ git submodule update --init --recursive
 | Submodule           | Path                              | Description                              |
 | ------------------- | --------------------------------- | ---------------------------------------- |
 | NuvioTVWebOS        | `submodules/NuvioTVWebOS/`        | Core webOS app (patched Stremio Theater) |
-| NuvioWeb            | `submodules/NuvioWeb/`            | Nuvio web client                         |
-| NuvioWebTVInstaller | `submodules/NuvioWebTVInstaller/` | WebOS installer                          |
+| AETHERWeb            | `submodules/SLATEWeb/`            | SLATE web client                         |
+| AETHERWebTVInstaller | `submodules/SLATEWebTVInstaller/` | WebOS installer                          |
 
 ---
 

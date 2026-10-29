@@ -1,9 +1,9 @@
 {
-  "id": "com.toxicwind.aether.server",
+  "id": "com.toxicwind.slate.server",
   "description": "Stremio Server",
   "services": [
     {
-      "name": "com.toxicwind.aether.server"
+      "name": "com.toxicwind.slate.server"
     }
   ]
 }

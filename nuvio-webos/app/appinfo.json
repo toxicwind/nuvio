@@ -1,10 +1,10 @@
 {
-  "id": "com.toxicwind.aether",
+  "id": "com.toxicwind.slate",
   "version": "1.1.0",
   "vendor": "Toxicwind",
   "type": "web",
   "main": "index.html",
-  "title": "AETHER",
+  "title": "SLATE",
   "icon": "icon.png",
   "largeIcon": "icon.png",
   "bgColor": "#000000",
