@@ -4,7 +4,7 @@
 
 Origin: Nuvio (cloud media TV app, WhiteGiso lineage) forked into our
 self-hosted live-TV shell. The architect picked SLATE as the identity
-(2026-10-29 ask; streamers dropped).
+(2026-10-29 ask; slate dropped).
 
 - App shell: nuvio-webos `com.toxicwind.slate` (webOS, Stremio-Server service)
 - Live-TV engine: IPTV-BRIDGE addon (Xtream/M3U → Live/Movies/Series

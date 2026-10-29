@@ -7,12 +7,12 @@
   },
   "packages": [
     {
-      "id": "io.strem.tv",
-      "title": "Stremio",
-      "iconUri": "https://raw.githubusercontent.com/kieranbrown/stremio-webos/main/app/icon.png",
-      "manifestUrl": "https://github.com/kieranbrown/stremio-webos/releases/latest/download/manifest.json",
+      "id": "com.toxicwind.slate",
+      "title": "SLATE",
+      "iconUri": "https://github.com/toxicwind/nuvio/releases/latest/download/slate-icon.png",
+      "manifestUrl": "https://github.com/toxicwind/nuvio/releases/latest/download/manifest.json",
       "pool": "main",
-      "shortDescription": "Stremio for webOS with working audio track selection."
+      "shortDescription": "SLATE — self-hosted live-TV shell for webOS (Xtream/M3U via IPTV-BRIDGE + Stremio engine)."
     }
   ]
 }

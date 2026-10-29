@@ -15,7 +15,7 @@ Run `make build` to generate these before inspecting or modifying them.
 
 ```
 app/                  # webOS app shell — starts service, redirects to http://127.0.0.1:8080
-  appinfo.json        # webOS app manifest (id: io.strem.tv)
+  appinfo.json        # webOS app manifest (id: com.toxicwind.slate)
   index.html          # Starts server via Luna, polls :8080, redirects when ready
   services.json       # Links to server service
   icon.png

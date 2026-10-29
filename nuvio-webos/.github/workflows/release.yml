@@ -31,12 +31,12 @@ jobs:
 
       - name: Generate manifest
         run: |
-          IPK="io.strem.tv_${{ steps.version.outputs.version }}_all.ipk"
+          IPK="com.toxicwind.slate_${{ steps.version.outputs.version }}_all.ipk"
           SHA256=$(sha256sum "$IPK" | cut -d' ' -f1)
           SIZE=$(stat --format=%s "$IPK")
           cat > manifest.json << EOF
           {
-            "id": "io.strem.tv",
+            "id": "com.toxicwind.slate",
             "version": "${{ steps.version.outputs.version }}",
             "type": "web",
             "title": "Stremio",
@@ -55,5 +55,5 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            io.strem.tv_${{ steps.version.outputs.version }}_all.ipk
+            com.toxicwind.slate_${{ steps.version.outputs.version }}_all.ipk
             manifest.json
