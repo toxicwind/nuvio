@@ -2,13 +2,14 @@ process.env.NODE_PATH =
   (process.env.NODE_PATH || "") + ":/usr/lib/node_modules:/usr/lib/nodejs";
 require("module").Module._initPaths();
 process.env.APP_PATH = process.env.APP_PATH || __dirname;
+process.env.HOME = __dirname; // stremio server writes .stremio-server under HOME — keep it in the writable service dir
 
 var http = require("http");
 var fs = require("fs");
 var path = require("path");
 var Service = require("webos-service");
 
-var service = new Service("io.strem.tv.server");
+var service = new Service("com.toxicwind.aether.server");
 var ready = false;
 var pendingMessages = [];
 

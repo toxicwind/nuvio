@@ -1,5 +1,9 @@
 {
-  "id": "io.strem.tv.server",
+  "id": "com.toxicwind.aether.server",
   "description": "Stremio Server",
-  "services": [{ "name": "io.strem.tv.server" }]
+  "services": [
+    {
+      "name": "com.toxicwind.aether.server"
+    }
+  ]
 }
