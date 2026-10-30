@@ -2,92 +2,334 @@
 <html>
 <head>
 <meta charset="UTF-8" />
-<title>SLATE</title>
+<title>SLATE · Netflix-Max</title>
 <style>
-:root{--slate-overscan:32px;--slate-bg:#000;--slate-panel:#0a0a0c;--slate-raised:#141418;--slate-text:#f5f5f7;--slate-muted:#8e8e96;--slate-accent:#4f7cff;--slate-accent-hot:#7aa2ff;--slate-focus-ms:140ms}
+:root{
+  --slate-overscan:28px;
+  --slate-bg:#050508;
+  --slate-panel:#0d0e14;
+  --slate-raised:#151722;
+  --slate-text:#f5f5f7;
+  --slate-muted:#8e92a4;
+  --slate-accent:#4f7cff;
+  --slate-accent-hot:#7aa2ff;
+  --slate-focus-ms:140ms;
+}
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--slate-bg);color:var(--slate-text);font-family:Arial,Helvetica,sans-serif;height:100vh;overflow:hidden;padding:var(--slate-overscan)}
-.hero{position:relative;height:42vh;border-radius:18px;overflow:hidden;background:url('assets/hero-slate.png') center/cover}
-.hero .shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.85),rgba(0,0,0,.15) 55%,transparent)}
-.hero .meta{position:absolute;left:52px;bottom:52px;max-width:640px}
-.hero h1{font-size:60px;letter-spacing:4px;margin-bottom:10px}
-.hero p{color:var(--slate-muted);font-size:22px;line-height:1.4}
-.hero .cta{display:inline-block;margin-top:18px;padding:14px 40px;background:var(--slate-accent);color:#fff;border-radius:30px;font-weight:700;letter-spacing:3px;font-size:20px}
-.rail{margin-top:30px}
-.rail h2{font-size:24px;color:var(--slate-text);margin-bottom:12px;letter-spacing:1px}
-.rail .row{display:flex;gap:14px;overflow-x:auto;scrollbar-width:none}
-.rail .row::-webkit-scrollbar{display:none}
-.card{flex:0 0 auto;width:200px;height:300px;border-radius:12px;background:linear-gradient(160deg,#141418,#05070f);border:3px solid transparent;transition:border-color var(--slate-focus-ms),transform var(--slate-focus-ms)}
-.card.focused{border-color:#fff;transform:scale(1.06)}
-.card .label{padding:10px;color:var(--slate-muted);font-size:15px}
-.epg .now{color:var(--slate-accent-hot);font-size:14px}
+body{
+  background:var(--slate-bg);
+  color:var(--slate-text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,sans-serif;
+  height:100vh;
+  overflow:hidden;
+  padding:var(--slate-overscan) calc(var(--slate-overscan)*1.3);
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+  user-select:none;
+}
+.topbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:4px 8px;
+}
+.brand-row{display:flex;align-items:center;gap:14px}
+.brand-badge{
+  font-size:22px;font-weight:900;letter-spacing:5px;color:#fff;
+  background:linear-gradient(135deg,#4f7cff,#9b6bff);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.plane-pill{
+  font-size:11px;font-family:monospace;letter-spacing:1.5px;
+  padding:4px 10px;border-radius:99px;
+  background:rgba(79,124,255,0.16);border:1px solid rgba(79,124,255,0.45);color:#9bb8ff;
+}
+.zipper-pill{
+  font-size:12px;font-family:monospace;color:var(--slate-muted);
+  background:var(--slate-panel);padding:5px 12px;border-radius:8px;border:1px solid #23263a;
+}
+.hero{
+  position:relative;
+  height:36vh;
+  min-height:240px;
+  border-radius:18px;
+  overflow:hidden;
+  background:url('assets/hero-slate.png') center/cover no-repeat, radial-gradient(circle at 75% 25%, #1f2b59, #08090f 70%);
+  border:1px solid rgba(255,255,255,0.08);
+  flex-shrink:0;
+}
+.hero .shade{
+  position:absolute;inset:0;
+  background:linear-gradient(90deg,rgba(5,5,8,.92) 0%,rgba(5,5,8,.55) 48%,rgba(5,5,8,.15) 100%);
+}
+.hero .meta{
+  position:absolute;left:42px;bottom:34px;max-width:680px;
+}
+.hero .kicker{
+  font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--slate-accent-hot);font-weight:700;margin-bottom:6px;
+}
+.hero h1{font-size:48px;letter-spacing:4px;margin-bottom:8px;font-weight:900}
+.hero p{color:var(--slate-muted);font-size:18px;line-height:1.4;margin-bottom:16px}
+.hero .actions{display:flex;gap:14px;align-items:center}
+.hero .cta{
+  display:inline-block;padding:11px 28px;background:var(--slate-accent);color:#fff;
+  border-radius:26px;font-weight:700;letter-spacing:2px;font-size:15px;
+}
+.hero .cta.secondary{
+  background:rgba(255,255,255,0.09);color:var(--slate-text);border:1px solid rgba(255,255,255,0.18);
+}
+.rails{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+  flex:1;
+  min-height:0;
+}
+.rail{display:flex;flex-direction:column;gap:8px}
+.rail-head{display:flex;align-items:center;justify-content:space-between}
+.rail h2{font-size:16px;letter-spacing:1.4px;text-transform:uppercase;color:#cfd3e6;font-weight:700}
+.rail .rail-meta{font-size:11px;font-family:monospace;color:var(--slate-muted)}
+.row{display:flex;gap:14px;overflow:visible}
+.card{
+  position:relative;
+  flex:0 0 230px;
+  height:112px;
+  border-radius:12px;
+  background:linear-gradient(160deg,#161926 0%,#0d0f17 100%);
+  border:2px solid rgba(255,255,255,0.07);
+  padding:12px 14px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  transition:transform var(--slate-focus-ms) cubic-bezier(0.16,1,0.3,1), border-color var(--slate-focus-ms) ease, box-shadow var(--slate-focus-ms) ease;
+}
+.card .tag{
+  font-size:10px;font-family:monospace;letter-spacing:1.2px;text-transform:uppercase;
+  color:var(--slate-accent-hot);
+}
+.card .title{font-size:16px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.card .sub{font-size:12px;color:var(--slate-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.card .bar{height:4px;background:rgba(255,255,255,0.1);border-radius:99px;overflow:hidden;margin-top:4px}
+.card .bar > i{display:block;height:100%;background:linear-gradient(90deg,var(--slate-accent),#9b6bff)}
+.card.focused{
+  transform:scale(1.06) translateY(-3px);
+  border-color:#fff;
+  box-shadow:0 10px 28px rgba(79,124,255,0.38), 0 0 0 2px rgba(79,124,255,0.6);
+  background:linear-gradient(160deg,#1f253b 0%,#121624 100%);
+  z-index:5;
+}
+.card.neighbor{
+  border-color:rgba(122,162,255,0.28);
+}
+.osd-pill{
+  position:fixed;top:28px;right:38px;
+  background:rgba(13,14,20,0.94);border:2px solid var(--slate-accent);
+  padding:10px 20px;border-radius:12px;font-family:monospace;font-size:24px;font-weight:800;
+  color:#fff;letter-spacing:3px;display:none;z-index:50;
+  box-shadow:0 8px 30px rgba(0,0,0,0.7);
+}
+.osd-pill.visible{display:block}
 </style>
 </head>
 <body>
+<div class="osd-pill" id="osdPill">CH --</div>
+<header class="topbar">
+  <div class="brand-row">
+    <span class="brand-badge">SLATE</span>
+    <span class="plane-pill" id="planeBadge">BLUE→GREEN · COMONAD ZIPPER2D · @slate/ux</span>
+  </div>
+  <div class="zipper-pill" id="zipperStatus">Zipper2D(r=0, c=0) · extract=SLATE-1</div>
+</header>
+
 <section class="hero" id="hero">
   <div class="shade"></div>
   <div class="meta">
-    <h1>SLATE</h1>
-    <p>Cinema &middot; Live TV &middot; Your Library — the fork that went beyond.</p>
-    <span class="cta">PRESS OK</span>
+    <div class="kicker" id="heroKicker">LIVE ON LUNA BUS &middot; WEBOS NATIVE</div>
+    <h1 id="heroTitle">SLATE MAX</h1>
+    <p id="heroDesc">Comonadic 2D spatial navigation, instant EPG rails, and direct LG webOS Luna HDMI/Home/Toast matrix.</p>
+    <div class="actions">
+      <span class="cta" id="heroCta">PRESS OK · LAUNCH</span>
+      <span class="cta secondary" id="heroSub">CH 0-9 DIRECT SWITCH</span>
+    </div>
   </div>
 </section>
-<div class="rail" id="r1"><h2>Live TV — Now</h2><div class="row epg" id="epgRow"></div></div>
-<div class="rail" id="r2"><h2>Your Library</h2><div class="row" id="libRow"></div></div>
-<div class="rail" id="r3"><h2>Continue Watching</h2><div class="row" id="cwRow"></div></div>
-<script type="module">
-// Vendored Bun library consumption: @slate/netflix-ux from dist/slate-ux.js
-import { createFocus, moveFocus, createEPG, nowNextFor, createOSD } from "./dist/slate-ux.js";
 
-// EPG sample data wired through vendored EPG engine
-const epgState = createEPG();
-const chans = [
-  { id: "SLATE-1", name: "Cinema 4K", prog: "Morning Cinema", p: "12%" },
-  { id: "SLATE-2", name: "News Global", prog: "Prime News", p: "67%" },
-  { id: "SLATE-3", name: "Live Sports", prog: "Sports Live", p: "34%" },
-  { id: "SLATE-4", name: "Documentary", prog: "Wild Earth", p: "89%" }
+<div class="rails">
+  <div class="rail" id="r0">
+    <div class="rail-head">
+      <h2>Live TV &mdash; EPG Now / Next</h2>
+      <span class="rail-meta">Rail 0 &middot; IPTV-BRIDGE + EPG Progress</span>
+    </div>
+    <div class="row" id="epgRow"></div>
+  </div>
+  <div class="rail" id="r1">
+    <div class="rail-head">
+      <h2>LG webOS Hardware &amp; HDMI Matrix (Luna RPC)</h2>
+      <span class="rail-meta">Rail 1 &middot; Direct Luna Bus Execution</span>
+    </div>
+    <div class="row" id="lunaRow"></div>
+  </div>
+  <div class="rail" id="r2">
+    <div class="rail-head">
+      <h2>Cinema &amp; Curated 4K Library</h2>
+      <span class="rail-meta">Rail 2 &middot; LoomTV Windowed Paging</span>
+    </div>
+    <div class="row" id="libRow"></div>
+  </div>
+</div>
+
+<script type="module">
+import {
+  makeZipper2D,
+  extract2D,
+  move2D,
+  extend2D,
+  isOk,
+  createOsd,
+  switchHdmiRTE,
+  launchHomeOrSlateRTE,
+  sendTvToastRTE,
+} from "./dist/slate-ux.js";
+
+const HOST_ORIGIN = location.port === "18080" ? location.origin : "http://10.0.0.218:18080";
+const lunaEnv = { baseUrl: HOST_ORIGIN };
+
+const rowsData = [
+  [
+    { id: "ch-101", ch: "101", tag: "LIVE · 4K HDR", title: "SLATE-1 Cinema", sub: "Blade Runner 2049 · 68% elapsed", prog: 68, action: () => sendTvToastRTE("Tuned: SLATE-1 Cinema 4K")(lunaEnv)() },
+    { id: "ch-102", ch: "102", tag: "LIVE · NEWS", title: "SLATE-2 Global", sub: "World Desk Live · 34% elapsed", prog: 34, action: () => sendTvToastRTE("Tuned: SLATE-2 Global")(lunaEnv)() },
+    { id: "ch-103", ch: "103", tag: "LIVE · SPORTS", title: "SLATE-3 Arena", sub: "Champions League 4K · 82% elapsed", prog: 82, action: () => sendTvToastRTE("Tuned: SLATE-3 Arena")(lunaEnv)() },
+    { id: "ch-104", ch: "104", tag: "LIVE · DOCS", title: "SLATE-4 Earth", sub: "Deep Ocean 60fps · 19% elapsed", prog: 19, action: () => sendTvToastRTE("Tuned: SLATE-4 Earth")(lunaEnv)() },
+    { id: "ch-105", ch: "105", tag: "LIVE · SCI-FI", title: "SLATE-5 Synth", sub: "Cyberpunk Anthology · 51% elapsed", prog: 51, action: () => sendTvToastRTE("Tuned: SLATE-5 Synth")(lunaEnv)() },
+  ],
+  [
+    { id: "hdmi-2", tag: "LUNA · HDMI 2 (ACTIVE)", title: "CoreELEC / AVR", sub: "MBox Meson Ref · SIMPLINK Port 2", prog: 100, action: () => switchHdmiRTE(2)(lunaEnv)() },
+    { id: "hdmi-1", tag: "LUNA · HDMI 1", title: "Switch to HDMI 1", sub: "com.webos.app.hdmi1 · Direct Input", prog: 100, action: () => switchHdmiRTE(1)(lunaEnv)() },
+    { id: "hdmi-3", tag: "LUNA · HDMI 3", title: "Switch to HDMI 3", sub: "com.webos.app.hdmi3 · Direct Input", prog: 100, action: () => switchHdmiRTE(3)(lunaEnv)() },
+    { id: "luna-home", tag: "LUNA · LAUNCHER", title: "webOS Home Bar", sub: "com.webos.app.home · System Launcher", prog: 100, action: () => launchHomeOrSlateRTE("home")(lunaEnv)() },
+    { id: "luna-toast", tag: "LUNA · TOAST BUS", title: "Ping TV Toast", sub: "luna://com.webos.notification/createToast", prog: 100, action: () => sendTvToastRTE("SLATE Comonad Ping -> LG TV!")(lunaEnv)() },
+  ],
+  [
+    { id: "vod-1", tag: "4K · REMUX", title: "Dune: Part Two", sub: "Dolby Vision · TrueHD 7.1 · Instant Play", prog: 45, action: () => sendTvToastRTE("Playing: Dune Part Two")(lunaEnv)() },
+    { id: "vod-2", tag: "4K · IMAX", title: "Oppenheimer", sub: "70mm Mastering · HDR10+ · Resume 01:14:22", prog: 62, action: () => sendTvToastRTE("Resuming: Oppenheimer")(lunaEnv)() },
+    { id: "vod-3", tag: "4K · HDR", title: "Severance S02", sub: "Lumon Industries · Episode 4 Ready", prog: 90, action: () => sendTvToastRTE("Playing: Severance S02")(lunaEnv)() },
+    { id: "vod-4", tag: "4K · AI-SUB", title: "Ghost in the Shell", sub: "1995 Restoration · Submaker Translated", prog: 100, action: () => sendTvToastRTE("Playing: Ghost in the Shell")(lunaEnv)() },
+    { id: "vod-5", tag: "4K · P2P", title: "The Matrix (1999)", sub: "Open Matte 4K · Swarm Seeded", prog: 25, action: () => sendTvToastRTE("Playing: The Matrix")(lunaEnv)() },
+  ]
 ];
 
-document.getElementById("epgRow").innerHTML = chans.map(c =>
-  `<div class="card" data-nav id="${c.id}"><div class="label">${c.name}</div><div class="label now">${c.prog} · ${c.p}</div></div>`
-).join("");
+const rowEls = [
+  document.getElementById("epgRow"),
+  document.getElementById("lunaRow"),
+  document.getElementById("libRow"),
+];
 
-// Library & continue watching cards
-document.getElementById("libRow").innerHTML = Array.from({length:8}, (_,i) =>
-  `<div class="card" data-nav id="lib-${i}"></div>`
-).join("");
-document.getElementById("cwRow").innerHTML = Array.from({length:6}, (_,i) =>
-  `<div class="card" data-nav id="cw-${i}"></div>`
-).join("");
+rowsData.forEach((row, rIdx) => {
+  rowEls[rIdx].innerHTML = row.map((item) => `
+    <div class="card" id="${item.id}" data-nav>
+      <div>
+        <div class="tag">${item.tag}</div>
+        <div class="title">${item.title}</div>
+      </div>
+      <div>
+        <div class="sub">${item.sub}</div>
+        <div class="bar"><i style="width:${item.prog}%"></i></div>
+      </div>
+    </div>
+  `).join("");
+});
 
-// Initialize spatial LRUD focus engine from vendored library
-const cardEls = [...document.querySelectorAll("[data-nav]")];
-let focusState = createFocus(cardEls.map(el => el.id));
+const zRes = makeZipper2D(rowsData, 0, 0);
+let zipper = isOk(zRes) ? zRes.value : null;
 
-function updateFocusView() {
-  cardEls.forEach(el => el.classList.toggle("focused", el.id === focusState.focusedId));
-  const active = document.getElementById(focusState.focusedId);
-  if (active) {
-    active.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
-  }
+function renderZipper() {
+  if (!zipper) return;
+  const focused = extract2D(zipper);
+  // Use Comonadic extend2D to compute Manhattan distance from cursor for every cell simultaneously
+  const neighborhood = extend2D(zipper, (cellZ) => ({
+    id: extract2D(cellZ).id,
+    dist: Math.abs(cellZ.r - zipper.r) + Math.abs(cellZ.c - zipper.c),
+  }));
+
+  neighborhood.rows.forEach((row) => {
+    row.forEach((cell) => {
+      const el = document.getElementById(cell.id);
+      if (!el) return;
+      el.classList.toggle("focused", cell.dist === 0);
+      el.classList.toggle("neighbor", cell.dist === 1);
+    });
+  });
+
+  document.getElementById("heroKicker").textContent = focused.tag;
+  document.getElementById("heroTitle").textContent = focused.title.toUpperCase();
+  document.getElementById("heroDesc").textContent = focused.sub;
+  document.getElementById("zipperStatus").textContent =
+    `Zipper2D(r=${zipper.r}, c=${zipper.c}) · extract=${focused.id}`;
+
+  try {
+    window.parent?.postMessage({
+      type: "slate:state",
+      r: zipper.r,
+      c: zipper.c,
+      focused: focused.id,
+      title: focused.title,
+      tag: focused.tag,
+    }, "*");
+  } catch {}
 }
 
-document.addEventListener("keydown", e => {
+// OSD numeric channel switcher from vendored @slate/ux
+const osdPill = document.getElementById("osdPill");
+const osd = createOsd(1800, {
+  channels: ["1", "2", "3", "4", "5", "101", "102", "103", "104", "105"],
+  onCommit: (ch) => {
+    const idx = Math.max(0, Math.min(4, (parseInt(ch.slice(-1), 10) || 1) - 1));
+    zipper = { ...zipper, r: 0, c: idx };
+    osdPill.classList.remove("visible");
+    renderZipper();
+    extract2D(zipper).action?.();
+  },
+});
+
+function handleKey(key) {
   const dirs = { ArrowUp: "up", ArrowDown: "down", ArrowLeft: "left", ArrowRight: "right" };
-  if (dirs[e.key]) {
-    e.preventDefault();
-    const res = moveFocus(focusState, dirs[e.key], 4);
-    focusState = res.next;
-    updateFocusView();
+  if (dirs[key]) {
+    zipper = move2D(zipper, dirs[key]);
+    renderZipper();
+    return true;
+  }
+  if (key === "Enter" || key === " ") {
+    const cur = extract2D(zipper);
+    cur.action?.();
+    document.getElementById("heroCta").textContent = `EXECUTED · ${cur.id.toUpperCase()}`;
+    return true;
+  }
+  if (/^[0-9]$/.test(key)) {
+    osd.digit(key);
+    osdPill.textContent = `CH ${osd.buffer()}`;
+    osdPill.classList.add("visible");
+    return true;
+  }
+  return false;
+}
+
+document.addEventListener("keydown", (e) => {
+  if (handleKey(e.key)) e.preventDefault();
+});
+
+window.addEventListener("message", (e) => {
+  if (e.data && e.data.type === "slate:key") {
+    handleKey(e.data.key);
   }
 });
 
-updateFocusView();
+renderZipper();
 
-// Live SSE hot-reload from BLUE plane (awrawr-pc lg-hot :18080) + TV anti-screensaver heartbeat
+// Live SSE hot-reload from BLUE plane (awrawr-pc lg-hot :18080)
 try {
-  const es = new EventSource("http://10.0.0.218:18080/__reload");
-  es.onmessage = e => { if (e.data === "reload") location.reload(); };
+  const es = new EventSource(`${HOST_ORIGIN}/__reload`);
+  es.onmessage = (e) => { if (e.data === "reload") location.reload(); };
 } catch {}
 </script>
 </body>
