@@ -1,105 +1,94 @@
 <!doctype html>
 <html>
-  <head>
-    <meta charset="UTF-8" />
-    <title>Stremio</title>
+<head>
+<meta charset="UTF-8" />
+<title>SLATE</title>
+<style>
+:root{--slate-overscan:32px;--slate-bg:#000;--slate-panel:#0a0a0c;--slate-raised:#141418;--slate-text:#f5f5f7;--slate-muted:#8e8e96;--slate-accent:#4f7cff;--slate-accent-hot:#7aa2ff;--slate-focus-ms:140ms}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--slate-bg);color:var(--slate-text);font-family:Arial,Helvetica,sans-serif;height:100vh;overflow:hidden;padding:var(--slate-overscan)}
+.hero{position:relative;height:42vh;border-radius:18px;overflow:hidden;background:url('assets/hero-slate.png') center/cover}
+.hero .shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.85),rgba(0,0,0,.15) 55%,transparent)}
+.hero .meta{position:absolute;left:52px;bottom:52px;max-width:640px}
+.hero h1{font-size:60px;letter-spacing:4px;margin-bottom:10px}
+.hero p{color:var(--slate-muted);font-size:22px;line-height:1.4}
+.hero .cta{display:inline-block;margin-top:18px;padding:14px 40px;background:var(--slate-accent);color:#fff;border-radius:30px;font-weight:700;letter-spacing:3px;font-size:20px}
+.rail{margin-top:30px}
+.rail h2{font-size:24px;color:var(--slate-text);margin-bottom:12px;letter-spacing:1px}
+.rail .row{display:flex;gap:14px;overflow-x:auto;scrollbar-width:none}
+.rail .row::-webkit-scrollbar{display:none}
+.card{flex:0 0 auto;width:200px;height:300px;border-radius:12px;background:linear-gradient(160deg,#141418,#05070f);border:3px solid transparent;transition:border-color var(--slate-focus-ms),transform var(--slate-focus-ms)}
+.card.focused{border-color:#fff;transform:scale(1.06)}
+.card .label{padding:10px;color:var(--slate-muted);font-size:15px}
+.epg .now{color:var(--slate-accent-hot);font-size:14px}
+</style>
+</head>
+<body>
+<section class="hero" id="hero">
+  <div class="shade"></div>
+  <div class="meta">
+    <h1>SLATE</h1>
+    <p>Cinema &middot; Live TV &middot; Your Library — the fork that went beyond.</p>
+    <span class="cta">PRESS OK</span>
+  </div>
+</section>
+<div class="rail" id="r1"><h2>Live TV — Now</h2><div class="row epg" id="epgRow"></div></div>
+<div class="rail" id="r2"><h2>Your Library</h2><div class="row" id="libRow"></div></div>
+<div class="rail" id="r3"><h2>Continue Watching</h2><div class="row" id="cwRow"></div></div>
+<script type="module">
+// Vendored Bun library consumption: @slate/netflix-ux from dist/slate-ux.js
+import { createFocus, moveFocus, createEPG, nowNextFor, createOSD } from "./dist/slate-ux.js";
 
-    <!-- TOXICWIND MONOLITHIC CSS OVERRIDES -->
-    <style>
-      /* --- TOXICWIND AESTHETIC --- */
-      :root {
-        --background-color: #000000 !important;
-        --secondary-bg-color: #0a0a0c !important;
-        --primary-text-color: #f5f5f7 !important;
-        --secondary-text-color: #86868b !important;
-        --accent-color: #ff3366 !important;
-        --focus-ring: 0 0 0 4px #000, 0 0 0 6px #f5f5f7 !important;
-      }
+// EPG sample data wired through vendored EPG engine
+const epgState = createEPG();
+const chans = [
+  { id: "SLATE-1", name: "Cinema 4K", prog: "Morning Cinema", p: "12%" },
+  { id: "SLATE-2", name: "News Global", prog: "Prime News", p: "67%" },
+  { id: "SLATE-3", name: "Live Sports", prog: "Sports Live", p: "34%" },
+  { id: "SLATE-4", name: "Documentary", prog: "Wild Earth", p: "89%" }
+];
 
-      body {
-        font-family:
-          -apple-system, BlinkMacSystemFont, "SF Pro Display", Roboto,
-          Helvetica, sans-serif !important;
-        background: var(--background-color) !important;
-        color: var(--primary-text-color) !important;
-      }
+document.getElementById("epgRow").innerHTML = chans.map(c =>
+  `<div class="card" data-nav id="${c.id}"><div class="label">${c.name}</div><div class="label now">${c.prog} · ${c.p}</div></div>`
+).join("");
 
-      /* Force Stremio grid into the movieApp_tv16 spatial layout */
-      .board-container {
-        background: #000 !important;
-      }
-      .meta-item {
-        border-radius: 12px !important;
-        transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
-      }
-      .meta-item:focus,
-      .meta-item:hover {
-        transform: scale(1.05) !important;
-        box-shadow: var(--focus-ring) !important;
-        z-index: 10;
-      }
+// Library & continue watching cards
+document.getElementById("libRow").innerHTML = Array.from({length:8}, (_,i) =>
+  `<div class="card" data-nav id="lib-${i}"></div>`
+).join("");
+document.getElementById("cwRow").innerHTML = Array.from({length:6}, (_,i) =>
+  `<div class="card" data-nav id="cw-${i}"></div>`
+).join("");
 
-      /* Subtitle Engine Overrides (Mapping to your Submaker payload) */
-      .subtitles-container {
-        font-family: -apple-system, sans-serif !important;
-        font-weight: 600 !important;
-        text-shadow:
-          1px 1px 0 #000,
-          -1px -1px 0 #000,
-          1px -1px 0 #000,
-          -1px 1px 0 #000 !important;
-      }
-    </style>
-  </head>
-  <body
-    style="
-      background: #0c0b11;
-      margin: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      font-family: sans-serif;
-    "
-  >
-    <!-- TOXICWIND AIOSTREAMS LOCALSTORAGE INJECTION -->
-    <script>
-      window.addEventListener("load", function () {
-        const targetAddon = "https://aiostreams.torbox.app/manifest.json"; // Map to your deployment
-        let addons = localStorage.getItem("stremio_addons");
-        if (addons) {
-          addons = JSON.parse(addons);
-          if (!addons.includes(targetAddon)) {
-            addons.push(targetAddon);
-            localStorage.setItem("stremio_addons", JSON.stringify(addons));
-          }
-        } else {
-          localStorage.setItem("stremio_addons", JSON.stringify([targetAddon]));
-        }
-      });
-    </script>
+// Initialize spatial LRUD focus engine from vendored library
+const cardEls = [...document.querySelectorAll("[data-nav]")];
+let focusState = createFocus(cardEls.map(el => el.id));
 
-    <div id="status" style="color: rgba(255, 255, 255, 0.6); font-size: 24px">
-      Loading Stremio...
-    </div>
-    <script>
-      var done = false;
-      var bridge = new PalmServiceBridge();
-      bridge.onservicecallback = function(response) {
-          done = true;
-          var data = JSON.parse(response);
-          if (data.ready) location.href = 'http://127.0.0.1:8080/';
-      };
-      bridge.call('luna://com.toxicwind.slate.server/start', '{}');
-      setTimeout(function() {
-          if (done) return;
-          document.body.innerHTML =
-              '<div style="color:#fff;text-align:center;max-width:600px;padding:0 24px">' +
-              '<div style="font-size:28px;margin-bottom:12px">Stremio service didn't start</div>' +
-              '<div style="color:rgba(255,255,255,0.6);font-size:18px;margin-bottom:32px">Try again, or check Homebrew Channel logs if this keeps happening.</div>' +
-              '<button onclick="location.reload()" style="padding:14px 32px;font-size:20px;background:#7b5bf5;color:#fff;border:0;border-radius:6px;cursor:pointer">Retry</button>' +
-              '</div>';
-      }, 30000);
-    </script>
-  </body>
+function updateFocusView() {
+  cardEls.forEach(el => el.classList.toggle("focused", el.id === focusState.focusedId));
+  const active = document.getElementById(focusState.focusedId);
+  if (active) {
+    active.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+  }
+}
+
+document.addEventListener("keydown", e => {
+  const dirs = { ArrowUp: "up", ArrowDown: "down", ArrowLeft: "left", ArrowRight: "right" };
+  if (dirs[e.key]) {
+    e.preventDefault();
+    const res = moveFocus(focusState, dirs[e.key], 4);
+    focusState = res.next;
+    updateFocusView();
+  }
+});
+
+updateFocusView();
+
+// Live SSE hot-reload from BLUE plane (awrawr-pc lg-hot :18080) + TV anti-screensaver heartbeat
+try {
+  const es = new EventSource("http://10.0.0.218:18080/__reload");
+  es.onmessage = e => { if (e.data === "reload") location.reload(); };
+} catch {}
+</script>
+</body>
 </html>

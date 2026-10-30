@@ -1,6 +1,6 @@
 {
   "id": "com.toxicwind.slate.server",
-  "description": "Stremio Server",
+  "description": "SLATE Server",
   "services": [
     {
       "name": "com.toxicwind.slate.server"

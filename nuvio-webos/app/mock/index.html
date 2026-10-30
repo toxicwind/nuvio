@@ -1,0 +1,115 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SLATE · webOS Mock — Framed Debug</title>
+<style>
+:root{--tv-bezel:#1a1a1f;--tv-bezel-edge:#101014;--frame-text:#e8e8ee;--frame-muted:#8a8a95;--accent:#4f7cff;--hot:#7aa2ff;--panel:#14141a;--panel-2:#0c0c11;--border:#26262e}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:radial-gradient(1200px 600px at 50% -10%,#1c1c26,#0a0a0d 60%);color:var(--frame-text);min-height:100vh;font-family:ui-monospace,'SF Mono','JetBrains Mono',monospace;display:flex;flex-direction:column;align-items:center;padding:24px}
+h1{font-size:15px;letter-spacing:5px;font-weight:600;margin-bottom:4px;color:#fff}
+.sub{font-size:11px;color:var(--frame-muted);letter-spacing:1px;margin-bottom:18px;text-transform:uppercase}
+.tv{width:min(94vw,920px);background:linear-gradient(160deg,var(--tv-bezel),var(--tv-bezel-edge));border-radius:22px;padding:26px 26px 58px;box-shadow:0 30px 80px rgba(0,0,0,.7),inset 0 0 0 1px rgba(255,255,255,.05)}
+.tv-topbar{display:flex;justify-content:space-between;align-items:center;color:var(--frame-muted);font-size:10px;letter-spacing:2px;margin-bottom:14px;text-transform:uppercase}
+.tv-brand{display:flex;align-items:center;gap:10px}
+.tv-brand .dot{width:8px;height:8px;border-radius:50%;background:var(--hot);box-shadow:0 0 12px var(--hot)}
+.tv-brand b{color:#fff;font-weight:600}
+.tv-status{display:flex;gap:14px}
+.tv-status .live{color:#5dff8c;display:flex;align-items:center;gap:6px}
+.tv-status .live::before{content:'';width:7px;height:7px;border-radius:50%;background:#5dff8c;box-shadow:0 0 8px #5dff8c;animation:blink 1.4s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.screen{aspect-ratio:16/9;background:#000;border-radius:8px;position:relative;overflow:hidden;border:1px solid #000}
+.screen iframe{width:100%;height:100%;border:0;display:block}
+.overscan-guide{position:absolute;inset:0;pointer-events:none;z-index:3}
+.overscan-guide .zone{position:absolute;inset:var(--slate-overscan,32px);border:1px dashed rgba(79,124,255,.5);border-radius:4px}
+.overscan-guide .zone::after{content:attr(data-zone);position:absolute;top:-20px;left:0;font-size:9px;color:rgba(122,162,255,.8);letter-spacing:1px}
+.tv-footer{margin-top:14px;display:flex;justify-content:space-between;color:var(--frame-muted);font-size:10px;letter-spacing:1px}
+.remote{position:fixed;right:22px;bottom:22px;width:62px;background:var(--panel-2);border:1px solid var(--border);border-radius:16px;padding:12px 10px;display:flex;flex-direction:column;align-items:center;gap:8px;box-shadow:0 12px 30px rgba(0,0,0,.6);z-index:50}
+.remote .btn{width:40px;height:40px;border-radius:50%;background:#1d1d24;border:1px solid var(--border);color:#dfdff0;font-size:14px;display:flex;align-items:center;justify-content:center;cursor:pointer;user-select:none;transition:transform .05s,background .12s}
+.remote .btn:active{transform:scale(.9);background:var(--accent);color:#fff}
+.remote .btn.ok{background:var(--accent);color:#fff;border-color:var(--accent)}
+.remote .btn.ok:active{background:var(--hot)}
+.remote .row{display:flex;gap:8px;width:100%}
+.remote .row .grow{flex:1}
+.remote .label{color:var(--frame-muted);font-size:8px;letter-spacing:1px;margin-top:2px}
+.debug{margin-top:18px;width:min(94vw,920px);background:var(--panel);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.debug header{display:flex;justify-content:space-between;align-items:center;background:var(--panel-2);padding:8px 14px;border-bottom:1px solid var(--border);font-size:10px;letter-spacing:2px;color:var(--frame-muted);text-transform:uppercase}
+.debug header b{color:var(--hot);font-weight:600}
+.debug .body{padding:10px 14px;font-size:11px;line-height:1.7;color:#b8b8c6}
+.debug .body .kv{display:flex;gap:8px}
+.debug .body .k{color:var(--frame-muted);min-width:110px}
+.debug .body .v{color:#dfdff0;word-break:break-all}
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);background:#0c0c11;border:1px solid var(--accent);color:#e8e8ee;padding:9px 18px;border-radius:8px;font-size:11px;letter-spacing:1px;opacity:0;transition:opacity .25s;z-index:60;pointer-events:none}
+.toast.show{opacity:1}
+</style>
+</head>
+<body>
+<h1>SLATE&nbsp;//&nbsp;WEBOS&nbsp;MOCK</h1>
+<div class="sub">Live emulation · framed debug surface · drives the real app (no reinvention)</div>
+
+<div class="tv">
+  <div class="tv-topbar">
+    <div class="tv-brand"><span class="dot"></span><b>TOXICWIND</b>&nbsp;webOS&nbsp;MockTV</div>
+    <div class="tv-status"><span class="live">LIVE</span><span>3840&nbsp;×&nbsp;2160 · 60Hz</span></div>
+  </div>
+  <div class="screen">
+    <div class="overscan-guide"><div class="zone" data-zone="overscan-safe-zone 32px"></div></div>
+    <iframe id="appframe" src="../index.html" title="SLATE app (emulated — real index.html)"></iframe>
+  </div>
+  <div class="tv-footer"><span>com.toxicwind.slate</span><span id="tvclock"></span></div>
+</div>
+
+<div class="remote" title="webOS remote">
+  <div class="label">PWR</div>
+  <button class="btn" data-key="power">⏻</button>
+  <div class="row"><button class="btn" data-key="back">⌫</button><button class="btn" data-key="home">⌂</button></div>
+  <div class="row"><button class="btn" data-key="up">▲</button><button class="btn ok" data-key="ok"></button><button class="btn" data-key="down">▼</button></div>
+  <div class="row"><button class="btn" data-key="left">◀</button><button class="btn" data-key="right">▶</button></div>
+  <div class="label">DIGITS</div>
+  <div class="row"><button class="btn grow" data-key="1">1</button><button class="btn grow" data-key="2">2</button><button class="btn grow" data-key="3">3</button></div>
+</div>
+
+<div class="debug">
+  <header><span>debug&nbsp;//&nbsp;rendering&nbsp;surface</span><b id="debugfocus">waiting</b></header>
+  <div class="body">
+    <div class="kv"><span class="k">frame</span><span class="v">webOS overscan-safe-zone emulation (32px inset)</span></div>
+    <div class="kv"><span class="k">app src</span><span class="v" id="dbsrc">../index.html (real SLATE UI — no copy)</span></div>
+    <div class="kv"><span class="k">focus engine</span><span class="v">driven via synthetic keydown into the app's own engine</span></div>
+    <div class="kv"><span class="k">live reload</span><span class="v">lg-hot SSE</span></div>
+    <div class="kv"><span class="k">render log</span><span class="v" id="dblog">ready</span></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+function tick(){ document.getElementById('tvclock').textContent=new Date().toLocaleTimeString('en-GB'); }
+tick(); setInterval(tick,1000);
+let toastTimer=null;
+function toast(m){ const t=document.getElementById('toast'); t.textContent=m; t.classList.add('show'); clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove('show'),1800); }
+const frame=document.getElementById('appframe');
+const dbgFocus=document.getElementById('debugfocus'), dbgLog=document.getElementById('dblog');
+function dbg(label){ dbgFocus.textContent=label; dbgLog.textContent=new Date().toLocaleTimeString('en-GB')+' · '+label; }
+
+// Drive the app's OWN focus engine by dispatching a real keydown into the iframe.
+// No duplicate engine: the app listens to keydown on its document, we synthesize it.
+const KEYMAP={up:'ArrowUp',down:'ArrowDown',left:'ArrowLeft',right:'ArrowRight',ok:'Enter',back:'Backspace',home:null,'1':'1','2':'2','3':'3'};
+function sendKey(k){
+  const mapped=KEYMAP[k]; if(!mapped) return dbg('key '+k+' (no app mapping)');
+  const ke=new KeyboardEvent('keydown',{key:mapped,bubbles:true,cancelable:true});
+  frame.contentWindow.document.dispatchEvent(ke);
+  dbg('key '+(mapped==='Enter'?'OK':k.toUpperCase()));
+}
+document.querySelectorAll('.remote .btn').forEach(b=>{
+  b.addEventListener('click',()=>{ const k=b.dataset.key; if(!k)return; sendKey(k);
+    if(k==='power')toast('mock power — emulation no-op'); else if(k==='home')toast('mock home'); else toast('key → app: '+k.toUpperCase()); });
+});
+document.addEventListener('keydown',(e)=>{
+  const m={'ArrowUp':'up','ArrowDown':'down','ArrowLeft':'left','ArrowRight':'right','Enter':'ok','1':'1','2':'2','3':'3'};
+  if(m[e.key]&&e.target!==frame){ sendKey(m[e.key]); e.preventDefault(); }
+});
+frame.addEventListener('load',()=>{ window.setTimeout(()=>frame.focus(),100); dbg('app loaded'); toast('webOS mock ready'); });
+</script>
+</body>
+</html>
