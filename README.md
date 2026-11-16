@@ -41,7 +41,7 @@ npm run submodules:update     # inside nuvio-platform/ — fetch the 11 upstream
 
 ## Build and deploy
 
-From the fleet root, via the estate's mise tasks:
+From the fleet root, via the Pens's mise tasks:
 
 ```sh
 mise run nv-build      # build:webos

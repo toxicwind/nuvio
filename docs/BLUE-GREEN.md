@@ -4,7 +4,7 @@
 
 | Plane | Host / Target | Role | Runtime Surface |
 |---|---|---|---|
-| **BLUE (Canary / Dev Plane)** | `awrawr-pc` (`pens://`) | Hot development, compilation, test rigs, live mock | `lg-hot` (:18080), webOS MockTV (:18080/mock), Funnel (`estate.tailc9ac71.ts.net/slate/`) |
+| **BLUE (Canary / Dev Plane)** | `awrawr-pc` (`pens://`) | Hot development, compilation, test rigs, live mock | `lg-hot` (:18080), webOS MockTV (:18080/mock), Funnel (`Pens.tailc9ac71.ts.net/slate/`) |
 | **GREEN (Production Stable)** | `LG webOS TV` (`10.0.0.176:9922`) / `yote` | Target display hardware | `com.toxicwind.slate` native ipk, Luna Bus, `org.webosbrew.inputhook` |
 
 ## 2. Don't Reinvent the Wheel — Vendor & Max-Reveal
